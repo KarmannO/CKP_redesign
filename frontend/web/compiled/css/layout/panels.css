@@ -1,0 +1,45 @@
+.left-menu-container {
+  background-color: #abb7bc;
+  border-right: 1px solid #89959a;
+  height: 100%;
+  width: 300px;
+  flex: 0.2;
+  display: flex;
+  flex-direction: column;
+}
+.left-menu-header {
+  border-bottom: 1px solid #89959a;
+  background-color: #cdd9de;
+  font-family: "Fira Sans Condensed";
+  font-weight: 700;
+  text-align: center;
+  flex: 0.1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 2vw;
+}
+.left-menu {
+  flex: 0.9;
+}
+.least-page-container {
+  flex: 0.8;
+  display: flex;
+  flex-direction: column;
+}
+.page-container {
+  background-color: #D6D8D8;
+  height: 100%;
+  flex: 0.9;
+}
+.top-panel-container {
+  display: flex;
+  flex-direction: row-reverse;
+  font-family: "Fira Sans Condensed";
+  flex: 0.1;
+  background-color: #8faab5;
+  border-bottom: 1px solid #89959a;
+}
+.top-panel-element {
+  padding: 10px;
+}
