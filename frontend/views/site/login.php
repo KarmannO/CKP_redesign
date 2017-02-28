@@ -10,30 +10,52 @@ use yii\bootstrap\ActiveForm;
 $this->title = 'Login';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-login">
-    <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>Please fill out the following fields to login:</p>
+<style>
+    .login-container {
+        display: flex;
+        flex-direction: column;
+        margin-top: 100px;
+    }
 
-    <div class="row">
-        <div class="col-lg-5">
-            <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
+    .login-form {
+        width: 350px;
+        text-align: center;
+    }
 
-                <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+    .login-img {
+        width: 350px;
+        margin-bottom: 60px;
+    }
 
-                <?= $form->field($model, 'password')->passwordInput() ?>
+    .btn-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }
 
-                <?= $form->field($model, 'rememberMe')->checkbox() ?>
+    .btn {
+        width: 140px;
+    }
 
-                <div style="color:#999;margin:1em 0">
-                    If you forgot your password you can <?= Html::a('reset it', ['site/request-password-reset']) ?>.
-                </div>
+</style>
 
-                <div class="form-group">
-                    <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
-                </div>
-
-            <?php ActiveForm::end(); ?>
+<div class="login-container">
+    <div class="login-label">
+        <?php echo Html::img('@web/images/logo_large.png', ['class' => 'login-img']); ?>
+    </div>
+    <div class="login-form">
+        <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
+        <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+        <?= $form->field($model, 'password')->passwordInput() ?>
+        <hr>
+        <?= $form->field($model, 'rememberMe')->checkbox() ?>
+        Забыли пароль? <?= Html::a('Восстановить', ['site/request-password-reset']) ?>.
+        <hr>
+        <div class="btn-container">
+            <?= Html::submitButton('Вход', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+            <?= Html::a('Регистрация', ['site/signup'], ['class' => 'btn btn-success']) ?>
         </div>
+        <?php ActiveForm::end(); ?>
     </div>
 </div>

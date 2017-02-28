@@ -72,7 +72,15 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        if(Yii::$app->user->isGuest) {
+            return $this->redirect('/site/guest');
+        }
+        return $this->render('/site/index');
+    }
+
+    public function actionGuest()
+    {
+        return $this->redirect('/site/login');
     }
 
     /**
@@ -82,6 +90,7 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
+        $this->layout = 'guest';
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
@@ -148,6 +157,7 @@ class SiteController extends Controller
      */
     public function actionSignup()
     {
+        $this->layout = 'guest';
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {
@@ -169,6 +179,9 @@ class SiteController extends Controller
      */
     public function actionRequestPasswordReset()
     {
+        if(Yii::$app->user->isGuest) {
+            $this->layout = 'guest';
+        }
         $model = new PasswordResetRequestForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {

@@ -1,0 +1,136 @@
+html, body {
+  margin: 0px;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  overflow-y: hidden;
+}
+
+$content-padding: 10px;
+
+.base-flex-container {
+  display: flex;
+}
+
+.base-row-container {
+  @extend .base-flex-container;
+  flex-direction: row;
+}
+
+.base-col-container {
+  @extend .base-col-container;
+  flex-direction: column;
+}
+
+.guest-container {
+  @extend .base-row-container;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  width: 100%;
+}
+
+.guest-subcontainer {
+  @extend .base-col-container;
+  justify-content: center;
+  align-items: baseline;
+  align-content: center;
+  height: 100%;
+}
+
+.main-container {
+  @extend .base-col-container;
+  width: 100%;
+}
+
+.left-panel-container {
+  $left-panel-background: #323232;
+  @extend .base-col-container;
+  text-align: center;
+  background-color: $left-panel-background;
+  color: whitesmoke;
+  border-right: 1px groove darkgrey;
+  width: 230px;
+
+  $left-panel-element-background: $left-panel-background + #333333;
+
+  .left-panel-header {
+    @extend .base-col-container;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+    background-color: #909090;
+    padding: 5px;
+
+    .left-panel-header-img {
+      width: 200px;
+      margin-top: 2px;
+    }
+  }
+
+  .left-panel-element {
+    @extend .base-row-container;
+    background-color: $left-panel-element-background;
+    justify-content: space-between;
+    padding: $content-padding;
+    border-bottom: 1px groove $left-panel-element-background + #666666;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .left-panel-element:first-of-type {
+    border-top: 1px groove $left-panel-element-background + #666666;;
+  }
+
+  .left-subpanel {
+    $left-subpanel-background: $left-panel-background + #555555;
+    background-color: $left-subpanel-background;
+    display: none;
+
+    .left-subpanel-element {
+      padding: $content-padding;
+      border-bottom: 1px groove $left-subpanel-background + #666;
+      cursor: pointer;
+      user-select: none;
+      justify-content: flex-start;
+      display: flex;
+    }
+
+    .left-subpanel-element:last-child {
+      border-bottom: none;
+    }
+  }
+}
+
+.right-page-container {
+  @extend .base-row-container;
+  height: 100%;
+  background-color: white;
+}
+
+.top-panel-container {
+  $top-panel-color: #909090;
+  @extend .base-row-container;
+  @extend .container-with-padding;
+  justify-content: space-between;
+  align-items: center;
+  background-color: $top-panel-color;
+  height: 60px;
+  border-bottom: 1px groove $top-panel-color - #100011;
+}
+
+.content-container {
+  @extend .container-with-padding;
+  height: 100%;
+}
+
+.container-with-padding {
+  padding: $content-padding;
+}
+
+
+
+
+

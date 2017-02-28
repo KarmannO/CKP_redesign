@@ -1,0 +1,103 @@
+html,
+body {
+  margin: 0px;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  overflow-y: hidden; }
+
+.base-flex-container,
+.base-row-container,
+.guest-container,
+.left-panel-container .left-panel-element,
+.right-page-container,
+.top-panel-container {
+  display: flex; }
+
+.base-row-container,
+.guest-container,
+.left-panel-container .left-panel-element,
+.right-page-container,
+.top-panel-container {
+  flex-direction: row; }
+
+.base-col-container,
+.guest-subcontainer,
+.main-container,
+.left-panel-container,
+.left-panel-container .left-panel-header {
+  flex-direction: column; }
+
+.guest-container {
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  width: 100%; }
+
+.guest-subcontainer {
+  justify-content: center;
+  align-items: baseline;
+  align-content: center;
+  height: 100%; }
+
+.main-container {
+  width: 100%; }
+
+.left-panel-container {
+  text-align: center;
+  background-color: #323232;
+  color: whitesmoke;
+  border-right: 1px groove darkgrey;
+  width: 230px; }
+  .left-panel-container .left-panel-header {
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+    background-color: #909090;
+    padding: 5px; }
+    .left-panel-container .left-panel-header .left-panel-header-img {
+      width: 200px;
+      margin-top: 2px; }
+  .left-panel-container .left-panel-element {
+    background-color: #656565;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px groove #cbcbcb;
+    cursor: pointer;
+    user-select: none; }
+  .left-panel-container .left-panel-element:first-of-type {
+    border-top: 1px groove #cbcbcb; }
+  .left-panel-container .left-subpanel {
+    background-color: #878787;
+    display: none; }
+    .left-panel-container .left-subpanel .left-subpanel-element {
+      padding: 10px;
+      border-bottom: 1px groove #ededed;
+      cursor: pointer;
+      user-select: none;
+      justify-content: flex-start;
+      display: flex; }
+    .left-panel-container .left-subpanel .left-subpanel-element:last-child {
+      border-bottom: none; }
+
+.right-page-container {
+  height: 100%;
+  background-color: white; }
+
+.top-panel-container {
+  justify-content: space-between;
+  align-items: center;
+  background-color: #909090;
+  height: 60px;
+  border-bottom: 1px groove #80907f; }
+
+.content-container {
+  height: 100%; }
+
+.container-with-padding,
+.top-panel-container,
+.content-container {
+  padding: 10px; }
+
