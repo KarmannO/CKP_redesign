@@ -74,7 +74,7 @@ $content-padding: 10px;
     @extend .base-row-container;
     background-color: $left-panel-element-background;
     justify-content: space-between;
-    padding: $content-padding;
+    padding: 5px;
     border-bottom: 1px groove $left-panel-element-background + #666666;
     cursor: pointer;
     user-select: none;
@@ -124,6 +124,8 @@ $content-padding: 10px;
 .content-container {
   @extend .container-with-padding;
   height: 100%;
+  width: 100%;
+  overflow-y: scroll;
 }
 
 .container-with-padding {

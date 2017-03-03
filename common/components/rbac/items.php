@@ -1,8 +1,8 @@
 <?php
 return [
-    'admin_panel' => [
+    'ckp_full_list' => [
         'type' => 2,
-        'description' => 'Панель администратора',
+        'description' => 'Список всех ЦКП и возможность их редактирования.',
     ],
     'user' => [
         'type' => 1,
@@ -11,11 +11,11 @@ return [
     ],
     'moderator' => [
         'type' => 1,
-        'description' => 'Модератор',
+        'description' => 'Администратор ЦКП',
         'ruleName' => 'userRole',
         'children' => [
             'user',
-            'admin_panel',
+            'ckp_full_list',
         ],
     ],
     'administrator' => [

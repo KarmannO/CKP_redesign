@@ -10,6 +10,18 @@ use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
 
+$js = <<< JS
+/* To initialize BS3 tooltips set this below */
+$(function () { 
+    $("[data-toggle='tooltip']").tooltip(); 
+});;
+/* To initialize BS3 popovers set this below */
+$(function () { 
+    $("[data-toggle='popover']").popover(); 
+});
+JS;
+// Register tooltip/popover initialization javascript
+$this->registerJs($js);
 AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
@@ -24,12 +36,12 @@ AppAsset::register($this);
 </head>
 <body>
 <style>
-    .btn {
+    .top-panel-container > div > .btn {
         background-color: lightgray;
         color: darkslategray;
     }
 
-    .btn:hover {
+    .top-panel-container > div > .btn:hover {
         color: darkslategray;
     }
 </style>
@@ -53,7 +65,7 @@ AppAsset::register($this);
                 <span class="glyphicon glyphicon-menu-down"></span>
             </div>
             <div class="left-subpanel" id="user-subpanel">
-                <div class="left-subpanel-element">
+                <div class="left-subpanel-element" id="my-data">
                     <span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Мои данные
                 </div>
                 <div class="left-subpanel-element">
@@ -68,14 +80,20 @@ AppAsset::register($this);
                 <span class="glyphicon glyphicon-menu-down"></span>
             </div>
             <div class="left-subpanel" id="ckp-subpanel">
-                <div class="left-subpanel-element">
-                    asdsda
+                <div class="left-subpanel-element" id="my-ckp">
+                    <span class="glyphicon glyphicon-list-alt"></span>&nbsp;&nbsp;Мои ЦКП
                 </div>
                 <div class="left-subpanel-element">
-                    asdsda
+                    <span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Пользователи ЦКП
                 </div>
                 <div class="left-subpanel-element">
-                    asdsda
+                    <span class="glyphicon glyphicon-list"></span>&nbsp;&nbsp;Заявки ЦКП
+                </div>
+                <div class="left-subpanel-element" id="construct-service">
+                    <span class="glyphicon glyphicon-wrench"></span>&nbsp;&nbsp;Конструктор услуг
+                </div>
+                <div class="left-subpanel-element">
+                    <span class="glyphicon glyphicon-hdd"></span>&nbsp;&nbsp;Оборудование ЦКП
                 </div>
             </div>
             <div class="left-panel-element" id="is-panel">
@@ -84,23 +102,111 @@ AppAsset::register($this);
             </div>
             <div class="left-subpanel" id="is-subpanel">
                 <div class="left-subpanel-element">
-                    asdsda
+                    <span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Пользователи ИС
                 </div>
                 <div class="left-subpanel-element">
-                    asdsda
+                    <span class="glyphicon glyphicon-list"></span>&nbsp;&nbsp;Список ЦКП
                 </div>
                 <div class="left-subpanel-element">
-                    asdsda
+                    <span class="glyphicon glyphicon-lock"></span>&nbsp;&nbsp;Управление правами
+                </div>
+            </div>
+            <div class="left-panel-element" id="info-panel">
+                Информация
+                <span class="glyphicon glyphicon-menu-down"></span>
+            </div>
+            <div class="left-subpanel" id="info-subpanel">
+                <div class="left-subpanel-element">
+                    <span class="glyphicon glyphicon-book"></span>&nbsp;&nbsp;Справочники
+                </div>
+                <div class="left-subpanel-element">
+                    <span class="glyphicon glyphicon-info-sign"></span>&nbsp;&nbsp;О системе
+                </div>
+                <div class="left-subpanel-element">
+                    <span class="glyphicon glyphicon-earphone"></span>&nbsp;&nbsp;Контакты
                 </div>
             </div>
         </div>
         <div class="content-container">
-            <?= $content ?>
+            <div class="container-fluid">
+                <?= $content ?>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
+    (function($){
+        $.fn.serializeObject = function(){
+
+            var self = this,
+                json = {},
+                push_counters = {},
+                patterns = {
+                    "validate": /^[a-zA-Z][a-zA-Z0-9_]*(?:\[(?:\d*|[a-zA-Z0-9_]+)\])*$/,
+                    "key":      /[a-zA-Z0-9_]+|(?=\[\])/g,
+                    "push":     /^$/,
+                    "fixed":    /^\d+$/,
+                    "named":    /^[a-zA-Z0-9_]+$/
+                };
+
+
+            this.build = function(base, key, value){
+                base[key] = value;
+                return base;
+            };
+
+            this.push_counter = function(key){
+                if(push_counters[key] === undefined){
+                    push_counters[key] = 0;
+                }
+                return push_counters[key]++;
+            };
+
+            $.each($(this).serializeArray(), function(){
+
+                // skip invalid keys
+                if(!patterns.validate.test(this.name)){
+                    return;
+                }
+
+                var k,
+                    keys = this.name.match(patterns.key),
+                    merge = this.value,
+                    reverse_key = this.name;
+
+                while((k = keys.pop()) !== undefined){
+
+                    // adjust reverse_key
+                    reverse_key = reverse_key.replace(new RegExp("\\[" + k + "\\]$"), '');
+
+                    // push
+                    if(k.match(patterns.push)){
+                        merge = self.build([], self.push_counter(reverse_key), merge);
+                    }
+
+                    // fixed
+                    else if(k.match(patterns.fixed)){
+                        merge = self.build([], k, merge);
+                    }
+
+                    // named
+                    else if(k.match(patterns.named)){
+                        merge = self.build({}, k, merge);
+                    }
+                }
+
+                json = $.extend(true, json, merge);
+            });
+
+            return json;
+        };
+    })(jQuery);
+
+    $(document).ready(function () {
+        $('.left-panel-container').mCustomScrollbar({ theme: 'rounded' });
+    });
+
     $('#user-panel').on('click', function () {
         if($('#user-subpanel').css('display') == 'none') {
             $('#user-subpanel').slideDown();
@@ -138,6 +244,31 @@ AppAsset::register($this);
             $('#is-panel > span').removeClass('glyphicon-menu-up');
             $('#is-panel > span').addClass('glyphicon-menu-down');
         }
+    });
+
+    $('#info-panel').on('click', function () {
+        if($('#info-subpanel').css('display') == 'none') {
+            $('#info-subpanel').slideDown();
+            $('#info-panel > span').removeClass('glyphicon-menu-down');
+            $('#info-panel > span').addClass('glyphicon-menu-up');
+        }
+        else {
+            $('#info-subpanel').slideUp();
+            $('#info-panel > span').removeClass('glyphicon-menu-up');
+            $('#info-panel > span').addClass('glyphicon-menu-down');
+        }
+    });
+
+    $('#my-data').on('click', function () {
+        window.location = '/user/data';
+    });
+
+    $('#my-ckp').on('click', function () {
+        window.location = '/ckp/list';
+    });
+
+    $('#construct-service').on('click', function () {
+        window.location = '/constructor/construct';
     });
 </script>
 

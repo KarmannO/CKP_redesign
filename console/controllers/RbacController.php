@@ -17,9 +17,10 @@ class RbacController extends Controller
     {
         $auth = Yii::$app->authManager;
         $auth->removeAll();
-        $admin_panel = $auth->createPermission('admin_panel');
-        $admin_panel->description = 'Панель администратора';
-        $auth->add($admin_panel);
+
+        $ckp_full_list = $auth->createPermission('ckp_full_list');
+        $ckp_full_list->description = 'Список всех ЦКП и возможность их редактирования.';
+        $auth->add($ckp_full_list);
 
         $rule = new UserRoleRule();
         $auth->add($rule);
@@ -30,12 +31,12 @@ class RbacController extends Controller
         $auth->add($user);
 
         $moder = $auth->createRole('moderator');
-        $moder->description = 'Модератор';
+        $moder->description = 'Администратор ЦКП';
         $moder->ruleName = $rule->name;
         $auth->add($moder);
 
         $auth->addChild($moder, $user);
-        $auth->addChild($moder, $admin_panel);
+        $auth->addChild($moder, $ckp_full_list);
         $admin = $auth->createRole('administrator');
         $admin->description = 'Администратор';
         $admin->ruleName = $rule->name;

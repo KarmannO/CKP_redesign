@@ -121,6 +121,22 @@ class User extends ActiveRecord implements IdentityInterface
         return $timestamp + $expire >= time();
     }
 
+    public static function getCurrentUser()
+    {
+        return Yii::$app->user->identity;
+    }
+
+    public function load($data)
+    {
+        foreach ($this->attributes as $key => $value)
+        {
+            if(isset($data[$key]))
+                $this[$key] = $data[$key];
+        }
+        $this->save();
+        return true;
+    }
+
     /**
      * @inheritdoc
      */
