@@ -21,7 +21,7 @@ class m170302_043628_create_service_table extends Migration
             'validation_status' => $this->integer()->notNull()
         ]);
         $this->createIndex('service_index', '{{%service}}', 'ckp', false);
-        $this->addForeignKey('service_fk', '{{%service}}', 'ckp', '{{%ckp}}', 'id');
+        $this->addForeignKey('service_fk', '{{%service}}', 'ckp', '{{%ckp}}', 'id', 'CASCADE', 'CASCADE');
     }
 
     /**

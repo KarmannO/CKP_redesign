@@ -53,7 +53,7 @@ AppAsset::register($this);
             <?php echo Html::img('@web/images/logo_large.png', ['width' => '150px']); ?>
         </div>
         <div>
-            <a href="" class="btn"><?= Yii::$app->user->identity->email ?>&nbsp;<span class="glyphicon glyphicon-user"></span></a>
+            <a href="/user/data" class="btn"><?= Yii::$app->user->identity->email ?>&nbsp;<span class="glyphicon glyphicon-user"></span></a>
             &nbsp;&nbsp;
             <a href="/site/logout" data-method="post" class="btn">Выход &nbsp;<span class="glyphicon glyphicon-off"></span></a>
         </div>
@@ -75,42 +75,58 @@ AppAsset::register($this);
                     <span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Заполнить заявку
                 </div>
             </div>
-            <div class="left-panel-element" id="ckp-panel">
-                Панель ЦКП
-                <span class="glyphicon glyphicon-menu-down"></span>
-            </div>
-            <div class="left-subpanel" id="ckp-subpanel">
-                <div class="left-subpanel-element" id="my-ckp">
-                    <span class="glyphicon glyphicon-list-alt"></span>&nbsp;&nbsp;Мои ЦКП
+            <?php
+            if(Yii::$app->user->can('ckp_admin_panel_access')) {
+                ?>
+                <div class="left-panel-element" id="ckp-panel">
+                    Панель ЦКП
+                    <span class="glyphicon glyphicon-menu-down"></span>
                 </div>
-                <div class="left-subpanel-element">
-                    <span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Пользователи ЦКП
+                <div class="left-subpanel" id="ckp-subpanel">
+                    <div class="left-subpanel-element" id="my-ckp">
+                        <span class="glyphicon glyphicon-list-alt"></span>&nbsp;&nbsp;Мои ЦКП
+                    </div>
+                    <div class="left-subpanel-element">
+                        <span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Пользователи ЦКП
+                    </div>
+                    <div class="left-subpanel-element">
+                        <span class="glyphicon glyphicon-list"></span>&nbsp;&nbsp;Заявки ЦКП
+                    </div>
+                    <div class="left-subpanel-element" id="construct-service">
+                        <span class="glyphicon glyphicon-wrench"></span>&nbsp;&nbsp;Конструктор услуг
+                    </div>
+                    <div class="left-subpanel-element">
+                        <span class="glyphicon glyphicon-hdd"></span>&nbsp;&nbsp;Оборудование ЦКП
+                    </div>
                 </div>
-                <div class="left-subpanel-element">
-                    <span class="glyphicon glyphicon-list"></span>&nbsp;&nbsp;Заявки ЦКП
+                <?php
+            }
+            ?>
+            <?php
+            if(Yii::$app->user->can('is_admin_panel_access'))
+            {
+                ?>
+                <div class="left-panel-element" id="is-panel">
+                    Панель ИС
+                    <span class="glyphicon glyphicon-menu-down"></span>
                 </div>
-                <div class="left-subpanel-element" id="construct-service">
-                    <span class="glyphicon glyphicon-wrench"></span>&nbsp;&nbsp;Конструктор услуг
+                <div class="left-subpanel" id="is-subpanel">
+                    <div class="left-subpanel-element">
+                        <span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Пользователи ИС
+                    </div>
+                    <div class="left-subpanel-element" id="ckp-full-list">
+                        <span class="glyphicon glyphicon-list"></span>&nbsp;&nbsp;Список ЦКП
+                    </div>
+                    <div class="left-subpanel-element">
+                        <span class="glyphicon glyphicon-lock"></span>&nbsp;&nbsp;Управление правами
+                    </div>
+                    <div class="left-subpanel-element" id="activities">
+                        <span class="glyphicon glyphicon-flag"></span>&nbsp;&nbsp;События в ИС
+                    </div>
                 </div>
-                <div class="left-subpanel-element">
-                    <span class="glyphicon glyphicon-hdd"></span>&nbsp;&nbsp;Оборудование ЦКП
-                </div>
-            </div>
-            <div class="left-panel-element" id="is-panel">
-                Панель ИС
-                <span class="glyphicon glyphicon-menu-down"></span>
-            </div>
-            <div class="left-subpanel" id="is-subpanel">
-                <div class="left-subpanel-element">
-                    <span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Пользователи ИС
-                </div>
-                <div class="left-subpanel-element">
-                    <span class="glyphicon glyphicon-list"></span>&nbsp;&nbsp;Список ЦКП
-                </div>
-                <div class="left-subpanel-element">
-                    <span class="glyphicon glyphicon-lock"></span>&nbsp;&nbsp;Управление правами
-                </div>
-            </div>
+                <?php
+            }
+            ?>
             <div class="left-panel-element" id="info-panel">
                 Информация
                 <span class="glyphicon glyphicon-menu-down"></span>
@@ -264,11 +280,19 @@ AppAsset::register($this);
     });
 
     $('#my-ckp').on('click', function () {
-        window.location = '/ckp/list';
+        window.location = '/ckp/my';
     });
 
     $('#construct-service').on('click', function () {
         window.location = '/constructor/construct';
+    });
+
+    $('#activities').on('click', function () {
+        window.location = '/admin/activities';
+    });
+
+    $('#ckp-full-list').on('click', function () {
+        window.location = '/ckp/full';
     });
 </script>
 

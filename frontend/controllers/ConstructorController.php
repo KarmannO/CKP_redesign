@@ -17,8 +17,7 @@ class ConstructorController extends Controller
 {
     public function actionConstruct()
     {
-        $valid_ckp_list = Ckp::getValidCkp();
-        return $this->render('construct', ['valid_ckp_list' => $valid_ckp_list]);
+        return $this->render('construct', ['valid_ckp_list' => Ckp::getValidCkp()]);
     }
 
     private function getValuesFromObject($object)

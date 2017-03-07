@@ -27,7 +27,7 @@ class m170302_040157_create_ckp_table extends Migration
             'director_fax' => $this->string(45),
         ]);
         $this->createIndex('organization_index', '{{%ckp}}', 'organization', false);
-        $this->addForeignKey('organization_fk', '{{%ckp}}', 'organization', '{{%organization}}', 'id', 'CASCADE');
+        $this->addForeignKey('organization_fk', '{{%ckp}}', 'organization', '{{%organization}}', 'id', 'CASCADE', 'CASCADE');
     }
 
     /**

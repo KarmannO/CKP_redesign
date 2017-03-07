@@ -20,7 +20,7 @@ class m170222_074803_create_new_table extends Migration
             'attachments' => $this->string(300)
         ]);
         $this->createIndex('author', '{{%new}}', 'author_id', true);
-        $this->addForeignKey('author_fk', '{{%new}}', 'author_id', '{{%user}}', 'id', 'CASCADE');
+        $this->addForeignKey('author_fk', '{{%new}}', 'author_id', '{{%user}}', 'id', 'CASCADE', 'CASCADE');
     }
 
     /**

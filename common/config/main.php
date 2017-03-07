@@ -7,7 +7,7 @@ return [
         ],
         'authManager' => [
             'class' => 'yii\rbac\PhpManager',
-            'defaultRoles' => ['user','moderator','administrator'],
+            'defaultRoles' => ['user','ckp_moderator','ckp_administrator', 'is_moderator', 'is_administrator'],
             'itemFile' => '@common/components/rbac/items.php',
             'assignmentFile' => '@common/components/rbac/assignments.php',
             'ruleFile' => '@common/components/rbac/rules.php'

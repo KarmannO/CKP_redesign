@@ -22,16 +22,25 @@ class UserRoleRule extends Rule
         if($user)
         {
             $role = $user->role;
-            if($item->name == 'administrator')
+            if($item->name == 'is_administrator')
             {
-                return $role == User::ROLE_ADMINISTRATOR;
-            } elseif ($item->name == 'moderator')
+                return $role == User::ROLE_IS_ADMINISTRATOR;
+            }
+            elseif ($item->name == 'is_moderator')
             {
-                return $role == User::ROLE_ADMINISTRATOR || $role == User::ROLE_MODERATOR;
+                return $role == User::ROLE_IS_ADMINISTRATOR || $role == User::ROLE_IS_MODERATOR;
+            }
+            elseif ($item->name == 'ckp_administrator')
+            {
+                return $role == User::ROLE_CKP_ADMINISTRATOR;
+            }
+            elseif ($item->name == 'ckp_moderator')
+            {
+                return $role == User::ROLE_CKP_ADMINISTRATOR || $role == User::ROLE_CKP_MODERATOR;
             }
             elseif ($item->name == 'user')
             {
-                return $role == User::ROLE_ADMINISTRATOR || $role == User::ROLE_MODERATOR || $role == User::ROLE_USER;
+                return $role == User::ROLE_USER;
             }
         }
         return false;

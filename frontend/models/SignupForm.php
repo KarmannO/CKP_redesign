@@ -1,6 +1,8 @@
 <?php
 namespace frontend\models;
 
+use common\models\Activity;
+use frontend\components\activities\ActivityHandler;
 use yii\base\Model;
 use common\models\User;
 
@@ -53,6 +55,14 @@ class SignupForm extends Model
         $user->setPassword($this->password);
         $user->generateAuthKey();
         
-        return $user->save() ? $user : null;
+        $user_saved = $user->save();
+        if($user_saved)
+        {
+            $info = ActivityHandler::handleNewUser($user->id, $user->username);
+            ActivityHandler::register_activity(2, $info);
+            return $user;
+        }
+        else
+            return null;
     }
 }
