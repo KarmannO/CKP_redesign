@@ -20,6 +20,6 @@ class Service extends ActiveRecord
 
     public static function getServicesByCkp($ckp)
     {
-        return Service::find()->where(['id' => $ckp]);
+        return Service::find()->where(['ckp' => $ckp]);
     }
 }

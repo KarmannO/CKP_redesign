@@ -29,6 +29,16 @@ class ActivityHandler
         return $json_info;
     }
 
+    public static function handleCkpComment($id, $user_id, $ckp_id, $text)
+    {
+        $json_info = [];
+        $json_info['id'] = $id;
+        $json_info['user_id'] = $user_id;
+        $json_info['ckp_id'] = $ckp_id;
+        $json_info['text'] = $text;
+        return $json_info;
+    }
+
     public static function handleChangeUserStatus($id, $status_from, $status_to)
     {
 

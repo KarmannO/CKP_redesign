@@ -1,5 +1,7 @@
 <?php
     $this->title = 'Конструктор услуг';
+    $ckps = \common\models\Ckp::getValidCkp()->all();
+    $ckp_items = \yii\helpers\ArrayHelper::map($ckps, 'id', 'short_name');
 ?>
 
 <style>
@@ -52,14 +54,8 @@
                <textarea name="description" rows="5" class="form-control"></textarea>
                <hr>
                <label>Выберите ЦКП, на базе которого будет оказываться услуга</label>
-               <select name="ckp" class="form-control">
-
-               </select>
+               <?= \yii\helpers\Html::dropDownList('ckp', null, $ckp_items, ['class' => 'form-control', 'id' => 'ckp_select']) ?>
                <br>
-               <label>Выберите оборудование, на базе которого будет оказываться услуга</label>
-               <select name="equipment" class="form-control"></select>
-               <br>
-               <label></label>
            </form>
        </div>
     </div>
@@ -80,6 +76,10 @@
                 <tr>
                     <td>Описание услуги:</td>
                     <td id="service-description"></td>
+                </tr>
+                <tr>
+                    <td>ЦКП:</td>
+                    <td id="ckp-selected"></td>
                 </tr>
             </table>
         </div>
@@ -184,6 +184,7 @@
 
     $(document).ready(function () {
         fb = $('.build-wrap').formBuilder(options).data('formBuilder');
+        
     });
     
     function GetHtmlFromServer(data) {
@@ -202,10 +203,27 @@
         });
     }
 
+    function GetCkp() {
+        var dt = null;
+        $.ajax({
+            async: false,
+            type: 'get',
+            url: '/constructor/ajax_get_ckp',
+            data: {
+                id: $('#ckp_select').val()
+            },
+            success: function (data) {
+                dt = data;
+            }
+        });
+        return dt;
+    }
+
     function GetDataFromInfoFields() {
         service_info = $('#info-form').serializeObject();
         $('#service-name').html(service_info['name']);
         $('#service-description').html(service_info['description']);
+        $('#ckp-selected').html(GetCkp(service_info['ckp']));
     }
 
     $('#confirm-tab').on('click', function () {
@@ -223,6 +241,9 @@
                 form_json: JSON.stringify(form_json),
                 form_html: JSON.stringify(form_html),
                 service_info: JSON.stringify(service_info)
+            },
+            success: function (data) {
+                window.location = '/site/index';
             }
         });
     });

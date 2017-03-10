@@ -10,7 +10,10 @@ namespace frontend\controllers;
 
 
 use common\models\Ckp;
+use common\models\Service;
+use common\models\User;
 use yii\base\Controller;
+use yii\base\ErrorException;
 use yii\helpers\Html;
 
 class ConstructorController extends Controller
@@ -18,6 +21,11 @@ class ConstructorController extends Controller
     public function actionConstruct()
     {
         return $this->render('construct', ['valid_ckp_list' => Ckp::getValidCkp()]);
+    }
+
+    public function actionAjax_get_ckp()
+    {
+        return Ckp::getCkp($_GET['id'])->one()->short_name;
     }
 
     private function getValuesFromObject($object)
@@ -154,6 +162,18 @@ class ConstructorController extends Controller
 
     public function actionAjax_add_service()
     {
-
+        $service_info = json_decode($_POST['service_info']);
+        $service = new Service();
+        $service->ckp = $service_info->ckp;
+        $service->title = $service_info->name;
+        $service->description = $service_info->description;
+        $service->json_template = $_POST['form_json'];
+        $service->html = $_POST['form_html'];
+        $service->validation_status = 2;
+        $service->author_id = User::getCurrentUser()->id;
+        if(!$service->save())
+            throw new ErrorException('Не удалось сохранить услугу.');
+        else
+            return 'Ok';
     }
 }

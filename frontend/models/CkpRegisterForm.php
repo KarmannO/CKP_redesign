@@ -10,6 +10,8 @@ namespace frontend\models;
 
 
 use common\models\Ckp;
+use common\models\CkpBinding;
+use common\models\User;
 use yii\base\Model;
 use frontend\components\activities\ActivityHandler;
 
@@ -75,6 +77,11 @@ class CkpRegisterForm extends Model
         $saved_ckp = $ckp->save();
         if($saved_ckp)
         {
+            $binding = new CkpBinding();
+            $binding->ckp_id = $ckp->id;
+            $binding->user_id = User::getCurrentUser()->id;
+            $binding->save();
+
             $info = ActivityHandler::handleNewCkp($ckp->id,
                     \Yii::$app->user->identity->id,
                     $ckp->full_name

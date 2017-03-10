@@ -64,6 +64,24 @@
                     else
                         return $data->director_full_name;
                 }
+            ],
+            [
+                'attribute' => 'validation_status',
+                'label' => 'Статус',
+                'content' => function($data) {
+                    if($data->validation_status == 1)
+                    {
+                        return \yii\bootstrap\Html::label('Подтверждён', null, ['class' => 'label label-success']);
+                    }
+                    elseif ($data->validation_status == 2)
+                    {
+                        return \yii\bootstrap\Html::label('На рассмотрении', null, ['class' => 'label label-warning']);
+                    }
+                    elseif ($data->validation_status == 3)
+                    {
+                        return \yii\bootstrap\Html::label('Заблокирован', null, ['class' => 'label label-danger']);
+                    }
+                }
             ]
         ],
         'tableOptions' => [

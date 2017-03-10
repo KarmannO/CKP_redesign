@@ -10,10 +10,13 @@ namespace frontend\controllers;
 
 
 use common\models\Ckp;
+use common\models\CkpComment;
 use common\models\Degree;
 use common\models\Position;
 use common\models\Organization;
 use common\models\Rank;
+use common\models\Service;
+use frontend\models\CkpCommentForm;
 use frontend\models\CkpRegisterForm;
 use yii\base\Controller;
 use yii\data\ActiveDataProvider;
@@ -68,7 +71,19 @@ class CkpController extends Controller
     public function actionView()
     {
         $ckp_id = $_GET['id'];
-        $data_provider = new ActiveDataProvider([ 'query' => Ckp::getCkp($ckp_id) ]);
-        return $this->render('view', ['dataProvider' => $data_provider]);
+        $model = new CkpCommentForm();
+        if($model->load(\Yii::$app->request->post()) && $model->send($ckp_id))
+            return \Yii::$app->response->redirect(['/ckp/view?id='.$ckp_id]);
+        else {
+            $data_provider = new ActiveDataProvider([ 'query' => Ckp::getCkp($ckp_id) ]);
+            $comments_provider = new ActiveDataProvider([ 'query' => CkpComment::getByCkp($ckp_id) ]);
+            $services_provider = new ActiveDataProvider([ 'query' => Service::getServicesByCkp($ckp_id) ]);
+            return $this->render('view', [
+                'model' => $model,
+                'dataProvider' => $data_provider,
+                'commentsProvider' => $comments_provider,
+                'servicesProvider' => $services_provider
+            ]);
+        }
     }
 }

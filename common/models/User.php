@@ -133,6 +133,16 @@ class User extends ActiveRecord implements IdentityInterface
         return Yii::$app->user->identity;
     }
 
+    public static function isMyId($user_id)
+    {
+        return static::getCurrentUser()->id == $user_id;
+    }
+
+    public static function getUsername($user_id)
+    {
+        return static::findOne($user_id)->username;
+    }
+
     public function load($data)
     {
         foreach ($this->attributes as $key => $value)
