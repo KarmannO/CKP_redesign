@@ -22,4 +22,9 @@ class Service extends ActiveRecord
     {
         return Service::find()->where(['ckp' => $ckp]);
     }
+
+    public static function getService($id)
+    {
+        return Service::find()->where(['id' => $id]);
+    }
 }

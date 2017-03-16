@@ -34,7 +34,8 @@ class CkpRegisterForm extends Model
             ['full_name', 'required', 'message' => 'Поле не должно быть пустым'],
             ['short_name', 'required', 'message' => 'Поле не должно быть пустым'],
             ['address', 'required', 'message' => 'Поле не должно быть пустым'],
-            ['organization', 'required', 'message' => 'Поле не должно быть пустым']
+            ['organization', 'required', 'message' => 'Поле не должно быть пустым'],
+            [['director_full_name', 'director_degree', 'director_rank', 'director_position', 'director_phone', 'director_fax'], 'default']
         ];
     }
 

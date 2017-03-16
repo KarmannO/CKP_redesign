@@ -14,7 +14,13 @@
     echo \yii\widgets\ListView::widget([
         'dataProvider' => $dataProvider,
         'itemView' => '_view',
-        'viewParams' => ['form' => $model, 'comments' => $commentsProvider, 'servicesProvider' => $servicesProvider],
+        'viewParams' => [
+            'form' => $model,
+            'equipment_form' => $equipment_form,
+            'comments' => $commentsProvider,
+            'servicesProvider' => $servicesProvider,
+            'file_model' => $file_model
+        ],
         'layout' => '{items}'
     ]);
 ?>

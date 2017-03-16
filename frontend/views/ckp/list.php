@@ -52,7 +52,7 @@
                 'attribute' => 'organization',
                 'label' => 'Организация',
                 'content' => function($data) {
-                    return \common\models\Organization::findOne($data)->short_name;
+                    return \common\models\Organization::findOne($data->organization)->short_name;
                 }
             ],
             [

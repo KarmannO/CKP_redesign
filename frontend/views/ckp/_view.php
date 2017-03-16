@@ -11,6 +11,14 @@
         margin-bottom: 150px;
     }
 
+    #equipment-info {
+        margin-bottom: 150px;
+    }
+
+    #basic-info {
+        margin-bottom: 150px;
+    }
+
     .message-container {
         display: flex;
         flex-direction: row;
@@ -33,6 +41,11 @@
         margin-bottom: 10px;
     }
 
+    .header-button {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 </style>
 <div class="tab-content">
     <div id="basic-info" class="tab-pane fade in active">
@@ -41,11 +54,25 @@
             <table class="table table-striped">
                 <tr>
                     <td><b>Полное наименование ЦКП</b></td>
-                    <td><?= $model->full_name ?></td>
+                    <td><?= \kartik\editable\Editable::widget([
+                            'model' => $model,
+                            'attribute' => 'full_name',
+                            'name'=>'full_name',
+                            'header' => 'Полное наименование ЦКП',
+                            'size'=>'md',
+                            'options' => ['class'=>'form-control', 'placeholder' => 'Поле ввода']
+                        ]); ?></td>
                 </tr>
                 <tr>
                     <td><b>Сокращённое наименование ЦКП</b></td>
-                    <td><?= $model->short_name ?></td>
+                    <td><?= \kartik\editable\Editable::widget([
+                            'model' => $model,
+                            'attribute' => 'short_name',
+                            'name'=>'short_name',
+                            'header' => 'Сокращённое наименование ЦКП',
+                            'size'=>'md',
+                            'options' => ['class'=>'form-control', 'placeholder' => 'Поле ввода']
+                        ]); ?></td>
                 </tr>
                 <tr>
                     <td><b>Организация, на базе которой оказываются услуги ЦКП</b></td>
@@ -53,7 +80,14 @@
                 </tr>
                 <tr>
                     <td><b>Адрес</b></td>
-                    <td><?= $model->address ?></td>
+                    <td><?= \kartik\editable\Editable::widget([
+                            'model' => $model,
+                            'attribute' => 'address',
+                            'name'=>'address',
+                            'header' => 'Адрес ЦКП',
+                            'size'=>'md',
+                            'options' => ['class'=>'form-control', 'placeholder' => 'Поле ввода']
+                        ]); ?></td>
                 </tr>
             </table>
         </div>
@@ -63,23 +97,69 @@
             <table class="table table-striped">
                 <tr>
                     <td><b>ФИО руководителя ЦКП</b></td>
-                    <td><?= $model->director_full_name ?></td>
+                    <td><?= \kartik\editable\Editable::widget([
+                            'model' => $model,
+                            'attribute' => 'director_full_name',
+                            'name'=>'director_full_name',
+                            'asPopover' => false,
+                            'header' => 'ФИО руководителя ЦКП',
+                            'size'=>'md',
+                            'options' => ['class'=>'form-control', 'placeholder' => 'Поле ввода']
+                        ]); ?></td>
                 </tr>
                 <tr>
                     <td><b>Ученая степень руководителя ЦКП</b></td>
-                    <td><?= $model->director_degree ?></td>
+                    <td><?= \kartik\editable\Editable::widget([
+                            'model' => $model,
+                            'name'=>'director_degree',
+                            'attribute' => 'director_degree',
+                            'asPopover' => false,
+                            'format' => \kartik\editable\Editable::FORMAT_BUTTON,
+                            'inputType' => \kartik\editable\Editable::INPUT_DROPDOWN_LIST,
+                            'data'=> \yii\helpers\ArrayHelper::map(\common\models\Degree::find()->all(), 'id', 'title'),
+                            'options' => ['class'=>'form-control', 'prompt'=>'Выберите учёную степень'],
+                            'editableValueOptions'=>['class'=>'text-danger']
+                        ]); ?></td>
                 </tr>
                 <tr>
                     <td><b>Ученое звание руководителя ЦКП</b></td>
-                    <td><?= $model->director_rank ?></td>
+                    <td><?= \kartik\editable\Editable::widget([
+                            'model' => $model,
+                            'name'=>'director_rank',
+                            'attribute' => 'director_rank',
+                            'asPopover' => false,
+                            'format' => \kartik\editable\Editable::FORMAT_BUTTON,
+                            'inputType' => \kartik\editable\Editable::INPUT_DROPDOWN_LIST,
+                            'data'=> \yii\helpers\ArrayHelper::map(\common\models\Rank::find()->all(), 'id', 'title'),
+                            'options' => ['class'=>'form-control', 'prompt'=>'Выберите учёное звание'],
+                            'editableValueOptions'=>['class'=>'text-danger']
+                        ]); ?></td>
                 </tr>
                 <tr>
                     <td><b>Должность руководителя ЦКП</b></td>
-                    <td><?= $model->director_position ?></td>
+                    <td><?= \kartik\editable\Editable::widget([
+                            'model' => $model,
+                            'attribute' => 'director_position',
+                            'name'=>'director_position',
+                            'asPopover' => false,
+                            'format' => \kartik\editable\Editable::FORMAT_BUTTON,
+                            'inputType' => \kartik\editable\Editable::INPUT_DROPDOWN_LIST,
+                            'data'=> \yii\helpers\ArrayHelper::map(\common\models\Rank::find()->all(), 'id', 'title'),
+                            'options' => ['class'=>'form-control', 'prompt'=>'Выберите учёное звание'],
+                            'editableValueOptions'=>['class'=>'text-danger']
+                        ]); ?></td>
                 </tr>
                 <tr>
                     <td><b>Контактный телефон руководителя ЦКП</b></td>
-                    <td><?= $model->director_phone ?></td>
+                    <td><?= \kartik\editable\Editable::widget([
+                            'model' => $model,
+                            'attribute' => 'director_phone',
+                            'name'=>'director_phone',
+                            'asPopover' => false,
+                            'header' => 'Контактный телефон руководителя ЦКП',
+                            'size'=>'md',
+                            'options' => ['class'=>'form-control', 'placeholder' => 'Поле ввода']
+                        ]); ?></td>
                 </tr>
             </table>
         </div>
@@ -95,7 +175,17 @@
                 'columns' => [
                     [
                         'label' => 'Наименование услуги',
-                        'attribute' => 'title'
+                        'attribute' => 'title',
+                        'content' => function($data) {
+                            return \yii\bootstrap\Html::a($data->title, ['/ckp/service?id='.$data->id]);
+                        }
+                    ],
+                    [
+                        'label' => 'Описание услуги',
+                        'attribute' => 'description',
+                        'content' => function($data) {
+                            return \yii\bootstrap\Html::tag('p', $data->description);
+                        }
                     ],
                     [
                         'label' => 'Автор',
@@ -147,20 +237,21 @@
         <hr>
         <h4>Обратная связь</h4>
         <br>
-        <div class="messages">
-                <?php
-                echo \yii\widgets\ListView::widget([
-                    'dataProvider' => $comments,
-                    'itemView' => '__message',
-                    'layout' => '{items}'
-                ]);
-                ?>
+        <?php yii\widgets\Pjax::begin(['id' => 'update_messages_box']); ?>
+        <div id="pjax-messages" class="messages">
+            <?php
+            echo \yii\widgets\ListView::widget([
+                'dataProvider' => $comments,
+                'itemView' => '__message',
+                'layout' => '{items}'
+            ]);
+            ?>
         </div>
         <hr>
         <div class="leave-message">
             <h4>Оставить комментарий</h4>
             <?php
-                $comment_form = \yii\widgets\ActiveForm::begin(['id' => 'ckp-comment-form']);
+                $comment_form = \yii\widgets\ActiveForm::begin(['id' => 'ckp-comment-form', 'options' => ['data-pjax' => true ]]);
             ?>
             <?= $comment_form->field($form, 'comment_text')->textarea(['rows' => 5]) ?>
             <?= \yii\helpers\Html::submitButton('Отправить', ['class' => 'btn btn-primary', 'name' => 'ckp-comment-button']) ?>
@@ -168,7 +259,145 @@
                 \yii\widgets\ActiveForm::end();
             ?>
         </div>
+        <?php \yii\widgets\Pjax::end(); ?>
     </div>
-    <div id="equipment-info" class="tab-pane fade"></div>
-    <div id="documents-info" class="tab-pane fade"></div>
+    <div id="equipment-info" class="tab-pane fade">
+        <div class="header-button">
+            <h3>Оборудование ЦКП</h3>
+            <button id="modal-toggle-btn" type="button" class="btn btn-success">Добавить оборудование</button>
+        </div>
+        <?php \yii\widgets\Pjax::begin(['id' => 'equipment-update-block']); ?>
+        <div id="equipment-update-div">
+            <?php
+                echo \yii\grid\GridView::widget([
+                    'dataProvider' => new \yii\data\ActiveDataProvider([
+                        'query' => \common\models\Equipment::getByCkp($model->id)
+                    ]),
+                    'formatter' => ['class' => 'yii\i18n\Formatter','nullDisplay' => '-'],
+                    'layout' => '{items}',
+                    'tableOptions' => [
+                        'class' => 'table table-striped'
+                    ],
+                    'columns' => [
+                        [
+                            'attribute' => 'title',
+                            'label' => 'Наименование'
+                        ],
+                        [
+                            'attribute' => 'production_company',
+                            'label' => 'Производитель'
+                        ],
+                        [
+                            'attribute' => 'production_year',
+                            'label' => 'Год выпуска'
+                        ],
+                        [
+                            'label' => 'Действия',
+                            'content' => function($data) use ($model) {
+                                return \yii\bootstrap\Html::a(
+                                    \yii\bootstrap\Html::tag('span', '', ['class' => 'glyphicon glyphicon-pencil']),
+                                    ['/ckp/ajax_equipment_edit']
+                                ).'&nbsp;&nbsp;'.
+                                    \yii\bootstrap\Html::a(
+                                        \yii\bootstrap\Html::tag('span', '', ['class' => 'glyphicon glyphicon-remove']),
+                                        ['/ckp/ajax_equipment_remove']
+                                    );
+                            }
+                        ]
+                    ]
+                ]);
+            ?>
+        </div>
+            <div id="myModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Добавить оборудование</h4>
+                        </div>
+                        <div class="modal-body">
+                            <?php
+                                $equipment_add_form = \yii\bootstrap\ActiveForm::begin(['options' => ['data-pjax' => true], 'id' => 'equipment_add_form']);
+                            ?>
+                            <?= $equipment_add_form->field($equipment_form, 'title')->textInput() ?>
+                            <?= $equipment_add_form->field($equipment_form, 'description')->textarea(['rows' => 5]) ?>
+                            <?= $equipment_add_form->field($equipment_form, 'production_company')->textInput() ?>
+                            <?= $equipment_add_form->field($equipment_form, 'production_year')->textInput() ?>
+                            <?= $equipment_add_form->field($equipment_form, 'mark')->textInput() ?>
+                            <?= $equipment_add_form->field($equipment_form, 'price')->textInput() ?>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default">Закрыть</button>
+                            <?= \yii\helpers\Html::submitButton('Добавить', [
+                                'id' => 'eq-add-button',
+                                'class' => 'btn btn-primary',
+                                'name' => 'equipment-add-button'
+                            ]) ?>
+                            <?php
+                            \yii\bootstrap\ActiveForm::end();
+                            ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php \yii\widgets\Pjax::end(); ?>
+        <script>
+            $(document).on('click', '#modal-toggle-btn', function () {
+                $('#myModal').modal('hide');
+                $('#myModal').modal('show');
+            });
+
+            $(document).on('click', '#eq-add-button', function () {
+                $('#myModal').modal('show');
+                $('#myModal').modal('hide');
+            });
+        </script>
+    </div>
+    <div id="documents-info" class="tab-pane fade">
+        <h3>Список файлов</h3>
+        <hr>
+        <?php
+            echo \yii\grid\GridView::widget([
+                'dataProvider' => new \yii\data\ActiveDataProvider([
+                    'query' => \common\models\CkpDocument::findByCkp($model->id)
+                ]),
+                'layout' => '{items}',
+                'columns' => [
+                    [
+                        'attribute' => 'short_path',
+                        'label' => 'Имя файла',
+                        'content' => function($data) {
+                            return \yii\bootstrap\Html::a($data->short_path, ['site/download?hash=ad55$qwe1313']);
+                        }
+                    ],
+                    [
+                        'attribute' => 'user',
+                        'label' => 'Добавлен пользователем',
+                        'content' => function($data) {
+                            return \common\models\User::getUsername($data);
+                        }
+                    ],
+                    [
+                        'attribute' => 'time',
+                        'label' => 'Дата добавления',
+                        'content' => function($data) {
+                            return date('d.m.Y', $data->time);
+                        }
+                    ]
+                ],
+                'tableOptions' => [
+                    'class' => 'table table-striped'
+                ]
+            ]);
+        ?>
+        <hr>
+        <?php $file_form = \yii\bootstrap\ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
+            <?= $file_form->field($file_model, 'file')->fileInput() ?>
+            <?= \yii\helpers\Html::submitButton('Загрузить', [
+                'id' => 'file-add-button',
+                'class' => 'btn btn-primary',
+                'name' => 'file-add-button'
+            ]) ?>
+        <?php \yii\bootstrap\ActiveForm::end(); ?>
+    </div>
 </div>

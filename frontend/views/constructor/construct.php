@@ -93,6 +93,23 @@
     </div>
 </div>
 
+<div id="myModall" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Ошибка заполнения</h4>
+            </div>
+            <div class="modal-body">
+                <p id="error"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     var russian = {
         addOption: 'Добавить опцию',
@@ -175,7 +192,12 @@
         yes: 'Да'
     };
 
-    var options = { disableFields: ['autocomplete', 'button', 'header', 'hidden', 'file'], messages: russian, dataType: 'json'};
+    var options = {
+        disableFields: ['autocomplete', 'button', 'header', 'hidden', 'file'],
+        messages: russian,
+        dataType: 'json',
+        showActionButtons: true
+    };
 
     var fb = null;
     var service_info = null;
@@ -225,11 +247,30 @@
         $('#service-description').html(service_info['description']);
         $('#ckp-selected').html(GetCkp(service_info['ckp']));
     }
+    
+    function ValidateInput() {
+        if(service_info == null)
+            return { result: false, message: 'Заполните пожалуйста информацию об услуге.'};
+        if(service_info['name'] == null || service_info['name'] == '')
+            return { result: false, message: 'Заполните пожалуйста наименование услуги.'};
+        if(!service_info['description'] == null || service_info['description'] == '')
+            return { result: false, message: 'Заполните пожалуйста описание услуги.'};
+        if(fb.formData == '[]')
+            return { result: false, message: 'Форма услуги должна содержать хотя бы одно поле.'};
+        return { result: true, message: ''};
+    }
 
-    $('#confirm-tab').on('click', function () {
+    $('#confirm-tab').on('click', function (event) {
         var json_form_data = JSON.parse(fb.formData);
-        GetHtmlFromServer(json_form_data);
         GetDataFromInfoFields();
+        var validated = ValidateInput();
+        if(!validated.result) {
+            $('#error').html(validated.message);
+            $('#myModall').modal('show');
+            event.stopPropagation();
+            return;
+        }
+        GetHtmlFromServer(json_form_data);
     });
     
     $('#submit-button').on('click', function () {

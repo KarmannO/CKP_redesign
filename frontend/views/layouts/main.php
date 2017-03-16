@@ -95,9 +95,6 @@ AppAsset::register($this);
                     <div class="left-subpanel-element" id="construct-service">
                         <span class="glyphicon glyphicon-wrench"></span>&nbsp;&nbsp;Конструктор услуг
                     </div>
-                    <div class="left-subpanel-element">
-                        <span class="glyphicon glyphicon-hdd"></span>&nbsp;&nbsp;Оборудование ЦКП
-                    </div>
                 </div>
                 <?php
             }

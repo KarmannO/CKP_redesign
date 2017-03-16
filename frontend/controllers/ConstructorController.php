@@ -28,7 +28,7 @@ class ConstructorController extends Controller
         return Ckp::getCkp($_GET['id'])->one()->short_name;
     }
 
-    private function getValuesFromObject($object)
+    private static function getValuesFromObject($object)
     {
         $result = [];
         foreach ($object as $value)
@@ -38,7 +38,7 @@ class ConstructorController extends Controller
         return $result;
     }
 
-    private function convertJsonElement($json_element)
+    private static function convertJsonElement($json_element)
     {
         switch ($json_element->type)
         {
@@ -58,12 +58,30 @@ class ConstructorController extends Controller
             break;
             case 'checkbox-group':
             {
-                return 'Группа чекбоксов';
+                $values = $json_element->values;
+                $result_html = '';
+                foreach ($values as $obj)
+                {
+                    $result_html .= Html::label(isset($obj->label) ? $obj->label : '').'&nbsp;&nbsp;'.
+                        Html::checkbox($json_element->name, isset($obj->selected) ? boolval($obj->selected) : false, [
+                            'class' => isset($json_element->className) ? $json_element->className : '',
+                        ]).Html::tag('br', null);
+                }
+                return $result_html;
             }
             break;
             case 'radio-group':
             {
-                return 'Группа радио кнопок';
+                $values = $json_element->values;
+                $result_html = '';
+                foreach ($values as $obj)
+                {
+                    $result_html .= Html::label(isset($obj->label) ? $obj->label : '').'&nbsp;&nbsp;'.
+                        Html::radio($json_element->name, isset($obj->selected) ? boolval($obj->selected) : false, [
+                            'class' => isset($json_element->className) ? $json_element->className : '',
+                        ]).Html::tag('br', null);
+                }
+                return $result_html;
             }
                 break;
             case 'date':
@@ -123,7 +141,7 @@ class ConstructorController extends Controller
                     'class' => isset($json_element->description) ? 'glyphicon glyphicon-question-sign' : '',
                     'style' => 'cursor: pointer'
                 ]).
-                Html::dropDownList($json_element->name, null, $this->getValuesFromObject($json_element->values), ['class' => 'form-control']);
+                Html::dropDownList($json_element->name, null, self::getValuesFromObject($json_element->values), ['class' => 'form-control']);
             }
             break;
             case 'number':
@@ -145,19 +163,25 @@ class ConstructorController extends Controller
         }
     }
 
+    public static function getHtml($raw_data)
+    {
+        $json_data = json_decode($raw_data);
+        $final_html = '';
+        foreach ($json_data as $key => $value)
+        {
+            $final_html .= self::convertJsonElement($value).'<br>';
+        }
+        return $final_html;
+    }
+
     public function actionAjax_get_html()
     {
         $raw_data = $_POST['raw_data'];
         if($raw_data)
         {
-            $json_data = json_decode($raw_data);
-            $final_html = '';
-            foreach ($json_data as $key => $value)
-            {
-                $final_html .= $this->convertJsonElement($value).'<br>';
-            }
-            echo $final_html;
+            return self::getHtml($raw_data);
         }
+        return null;
     }
 
     public function actionAjax_add_service()

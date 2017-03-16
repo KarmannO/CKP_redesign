@@ -14,8 +14,16 @@ use common\models\User;
 use frontend\components\activities\ActivityHandler;
 use yii\base\Model;
 
+/**
+ * Class CkpCommentForm
+ * @package frontend\models
+ * Class for representing comments model fields as user input form.
+ */
 class CkpCommentForm extends Model
 {
+    /**
+     * @var CkpComment::$comment_text full comment text.
+     */
     public $comment_text;
 
     public function rules()

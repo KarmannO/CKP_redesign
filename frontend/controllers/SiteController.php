@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\CkpDocument;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
@@ -147,6 +148,17 @@ class SiteController extends Controller
         return $this->render('requestPasswordResetToken', [
             'model' => $model,
         ]);
+    }
+
+    public function actionUpload()
+    {
+
+    }
+
+    public function actionDownload()
+    {
+        // TODO: Implement downloading.
+        $hash = $_GET['hash'];
     }
 
     public function actionResetPassword($token)
