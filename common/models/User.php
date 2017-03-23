@@ -69,6 +69,31 @@ class User extends ActiveRecord implements IdentityInterface
         return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
     }
 
+    public static function getIsUsers()
+    {
+        return static::find()->where(['role' => self::ROLE_USER]);
+    }
+
+    public static function getCkpModerators()
+    {
+        return static::find()->where(['role' => self::ROLE_CKP_MODERATOR]);
+    }
+
+    public static function getCkpAdministrators()
+    {
+        return static::find()->where(['role' => self::ROLE_CKP_ADMINISTRATOR]);
+    }
+
+    public static function getIsModerators()
+    {
+        return static::find()->where(['role' => self::ROLE_IS_MODERATOR]);
+    }
+
+    public static function getIsAdministrators()
+    {
+        return static::find()->where(['role' => self::ROLE_IS_ADMINISTRATOR]);
+    }
+
     /**
      * @inheritdoc
      */
@@ -126,6 +151,11 @@ class User extends ActiveRecord implements IdentityInterface
         $timestamp = (int) substr($token, strrpos($token, '_') + 1);
         $expire = Yii::$app->params['user.passwordResetTokenExpire'];
         return $timestamp + $expire >= time();
+    }
+
+    public static function getAllUsers()
+    {
+        return User::find();
     }
 
     public static function getCurrentUser()

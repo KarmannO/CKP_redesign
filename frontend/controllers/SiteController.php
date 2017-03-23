@@ -14,8 +14,16 @@ use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 
+/**
+ * Class SiteController
+ * @package frontend\controllers
+ * Class for handling general site requests.
+ */
 class SiteController extends Controller
 {
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return [
@@ -44,6 +52,9 @@ class SiteController extends Controller
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function actions()
     {
         return [
@@ -57,6 +68,10 @@ class SiteController extends Controller
         ];
     }
 
+    /**
+     * Action for displaying main page and checking login.
+     * @return string|\yii\web\Response Rendered home page or redirecting to actionLogin.
+     */
     public function actionIndex()
     {
         if(Yii::$app->user->isGuest) {
@@ -65,6 +80,10 @@ class SiteController extends Controller
         return $this->render('/site/index');
     }
 
+    /**
+     * Action for logging in.
+     * @return string|\yii\web\Response Rendered login page ot redirecting to actionIndex.
+     */
     public function actionLogin()
     {
         $this->layout = 'guest';
@@ -82,6 +101,10 @@ class SiteController extends Controller
         }
     }
 
+    /**
+     * Action for logging out.
+     * @return \yii\web\Response redirecting to actionIndex.
+     */
     public function actionLogout()
     {
         Yii::$app->user->logout();
@@ -89,6 +112,10 @@ class SiteController extends Controller
         return $this->goHome();
     }
 
+    /**
+     * Action for rendering site contacts.
+     * @return string|\yii\web\Response Rendered contacts or refreshed page.
+     */
     public function actionContact()
     {
         $model = new ContactForm();
@@ -112,6 +139,10 @@ class SiteController extends Controller
         return $this->render('about');
     }
 
+    /**
+     * Action for users register.
+     * @return string|\yii\web\Response Rendered signup page or redirecting.
+     */
     public function actionSignup()
     {
         $this->layout = 'guest';
@@ -129,6 +160,10 @@ class SiteController extends Controller
         ]);
     }
 
+    /**
+     * Action for reset users password.
+     * @return string|\yii\web\Response Rendered
+     */
     public function actionRequestPasswordReset()
     {
         if(Yii::$app->user->isGuest) {
@@ -150,15 +185,19 @@ class SiteController extends Controller
         ]);
     }
 
-    public function actionUpload()
-    {
-
-    }
-
+    /**
+     * Action for downloading file by type.
+     */
     public function actionDownload()
     {
-        // TODO: Implement downloading.
         $hash = $_GET['hash'];
+        $type = $_GET['type'];
+        if($type == 1) {
+            $file = CkpDocument::getByHash($hash);
+            if(file_exists($file->path)) {
+                Yii::$app->response->xSendFile($file->path);
+            }
+        }
     }
 
     public function actionResetPassword($token)

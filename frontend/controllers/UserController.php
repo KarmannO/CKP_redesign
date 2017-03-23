@@ -15,7 +15,7 @@ use yii\web\Response;
 
 class UserController extends Controller
 {
-    private function chooseWidgetOutput($data, $user)
+    public static function chooseWidgetOutput($data, $user)
     {
         foreach ($data as $key => $val)
         {
@@ -31,7 +31,7 @@ class UserController extends Controller
         {
             \Yii::$app->response->format = Response::FORMAT_JSON;
             if($user->load($_POST['User'])) {
-                return $this->chooseWidgetOutput($_POST['User'], $user);
+                return static::chooseWidgetOutput($_POST['User'], $user);
             }
             else {
                 return ['output' => '', 'message' => 'Ошибка подтверждения'];

@@ -10,6 +10,7 @@ namespace frontend\controllers;
 
 
 use common\models\Activity;
+use common\models\User;
 use yii\base\Controller;
 use yii\data\ActiveDataProvider;
 use yii\web\ForbiddenHttpException;
@@ -48,5 +49,47 @@ class AdminController extends Controller
         return $this->render('activities', [
             'activities' => $dataProvider
         ]);
+    }
+
+    /**
+     * Method for displaying all users by categories.
+     *
+     * @return string rendered users list.
+     */
+    public function actionUsers()
+    {
+        $label = '';
+        if(\Yii::$app->request->isPjax) {
+            switch ($_POST['category'])
+            {
+                case 'is-users':
+                    $query = User::getIsUsers();
+                    $label = 'Пользователи ИС';
+                break;
+                case 'ckp-moderators':
+                    $query = User::getCkpModerators();
+                    $label = 'Модераторы ЦКП';
+                break;
+                case 'ckp-administrators':
+                    $query = User::getCkpAdministrators();
+                    $label = 'Администраторы ЦКП';
+                break;
+                case 'is-moderators':
+                    $query = User::getIsModerators();
+                    $label = 'Модераторы ИС';
+                break;
+                case 'is-administrators':
+                    $query = User::getIsAdministrators();
+                    $label = 'Администраторы ИС';
+                break;
+                default:
+                    $query = User::getAllUsers();
+                break;
+            }
+        }
+        else
+            $query = User::getAllUsers();
+        $usersProvider = new ActiveDataProvider([ 'query' => $query ]);
+        return $this->render('users', ['users' => $usersProvider, 'label' => $label]);
     }
 }

@@ -71,7 +71,7 @@ AppAsset::register($this);
                 <div class="left-subpanel-element">
                     <span class="glyphicon glyphicon-list-alt"></span>&nbsp;&nbsp;Мои заявки
                 </div>
-                <div class="left-subpanel-element">
+                <div class="left-subpanel-element" id="fill-request">
                     <span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Заполнить заявку
                 </div>
             </div>
@@ -108,7 +108,7 @@ AppAsset::register($this);
                     <span class="glyphicon glyphicon-menu-down"></span>
                 </div>
                 <div class="left-subpanel" id="is-subpanel">
-                    <div class="left-subpanel-element">
+                    <div class="left-subpanel-element" id="is-users">
                         <span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Пользователи ИС
                     </div>
                     <div class="left-subpanel-element" id="ckp-full-list">
@@ -290,6 +290,14 @@ AppAsset::register($this);
 
     $('#ckp-full-list').on('click', function () {
         window.location = '/ckp/full';
+    });
+
+    $('#is-users').on('click', function () {
+        window.location = '/admin/users'
+    });
+
+    $('#fill-request').on('click', function () {
+        window.location = '/request/request'
     });
 </script>
 

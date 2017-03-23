@@ -54,7 +54,7 @@
                <textarea name="description" rows="5" class="form-control"></textarea>
                <hr>
                <label>Выберите ЦКП, на базе которого будет оказываться услуга</label>
-               <?= \yii\helpers\Html::dropDownList('ckp', null, $ckp_items, ['class' => 'form-control', 'id' => 'ckp_select']) ?>
+               <?= \yii\helpers\Html::dropDownList('ckp', isset($_GET['on_ckp']) ? $_GET['on_ckp'] : null, $ckp_items, ['class' => 'form-control', 'id' => 'ckp_select']) ?>
                <br>
            </form>
        </div>

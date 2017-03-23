@@ -22,4 +22,9 @@ class CkpDocument extends ActiveRecord
     {
         return static::find()->where(['ckp' => $ckp]);
     }
+
+    public static function getByHash($hash)
+    {
+        return static::find()->where(['hash' => $hash])->one();
+    }
 }

@@ -117,6 +117,7 @@
                             'format' => \kartik\editable\Editable::FORMAT_BUTTON,
                             'inputType' => \kartik\editable\Editable::INPUT_DROPDOWN_LIST,
                             'data'=> \yii\helpers\ArrayHelper::map(\common\models\Degree::find()->all(), 'id', 'title'),
+                            'displayValueConfig' => \yii\helpers\ArrayHelper::map(\common\models\Degree::find()->all(), 'id', 'title'),
                             'options' => ['class'=>'form-control', 'prompt'=>'Выберите учёную степень'],
                             'editableValueOptions'=>['class'=>'text-danger']
                         ]); ?></td>
@@ -131,6 +132,7 @@
                             'format' => \kartik\editable\Editable::FORMAT_BUTTON,
                             'inputType' => \kartik\editable\Editable::INPUT_DROPDOWN_LIST,
                             'data'=> \yii\helpers\ArrayHelper::map(\common\models\Rank::find()->all(), 'id', 'title'),
+                            'displayValueConfig' => \yii\helpers\ArrayHelper::map(\common\models\Rank::find()->all(), 'id', 'title'),
                             'options' => ['class'=>'form-control', 'prompt'=>'Выберите учёное звание'],
                             'editableValueOptions'=>['class'=>'text-danger']
                         ]); ?></td>
@@ -144,7 +146,8 @@
                             'asPopover' => false,
                             'format' => \kartik\editable\Editable::FORMAT_BUTTON,
                             'inputType' => \kartik\editable\Editable::INPUT_DROPDOWN_LIST,
-                            'data'=> \yii\helpers\ArrayHelper::map(\common\models\Rank::find()->all(), 'id', 'title'),
+                            'data'=> \yii\helpers\ArrayHelper::map(\common\models\Position::find()->all(), 'id', 'title'),
+                            'displayValueConfig' => \yii\helpers\ArrayHelper::map(\common\models\Position::find()->all(), 'id', 'title'),
                             'options' => ['class'=>'form-control', 'prompt'=>'Выберите учёное звание'],
                             'editableValueOptions'=>['class'=>'text-danger']
                         ]); ?></td>
@@ -165,6 +168,10 @@
         </div>
     </div>
     <div id="service-info" class="tab-pane fade">
+        <br>
+        <h4>Список оказываемых услуг</h4>
+        <a style="float: right" href="/constructor/construct?on_ckp=<?= $model->id ?>" class="btn btn-success">Добавить услугу</a>
+        <br>
         <?php
             echo \yii\grid\GridView::widget([
                 'dataProvider' => $servicesProvider,
@@ -211,30 +218,32 @@
         ?>
     </div>
     <div id="administrators-info" class="tab-pane fade">
-        <?php
+        <div>
+            <?php
             if($model->validation_status == 1)
             {
-                echo \yii\bootstrap\Html::tag('h3', \yii\bootstrap\Html::label('Подтверждён', null, ['class' => 'label label-success']));
+                echo \yii\bootstrap\Html::tag('h3', \yii\bootstrap\Html::label('Подтверждён', null, ['class' => 'label label-success', 'style' => 'float: right']));
                 ?>
-                    <p>Ваш ЦКП подтверждён и пользователи могут заполнять заявки на его услуги.</p>
+                <b>Ваш ЦКП подтверждён и пользователи могут заполнять заявки на его услуги.</b>
                 <?php
             }
             elseif($model->validation_status == 2)
             {
-                echo \yii\bootstrap\Html::tag('h3', \yii\bootstrap\Html::label('На рассмотрении', null, ['class' => 'label label-warning']));
+                echo \yii\bootstrap\Html::tag('h3', \yii\bootstrap\Html::label('На рассмотрении', null, ['class' => 'label label-warning', 'style' => 'float: right']));
                 ?>
-                <p>Ваш ЦКП находится на рассмотрении, пользователи не могут заполнять заявки. Ожидайте сообщения от администрации ИС.</p>
+                <b>Ваш ЦКП находится на рассмотрении, пользователи не могут заполнять заявки. Ожидайте сообщения от администрации ИС.</b>
                 <?php
             }
             elseif($model->validation_status == 3)
             {
-                echo \yii\bootstrap\Html::tag('h3', \yii\bootstrap\Html::label('Заблокирован', null, ['class' => 'label label-danger']));
+                echo \yii\bootstrap\Html::tag('h3', \yii\bootstrap\Html::label('Заблокирован', null, ['class' => 'label label-danger', 'style' => 'float: right']));
                 ?>
-                <p>Ваш ЦКП заблокирован в связи с прекращением деятельности или нарушением правил ИС. Для разблокировки свяжитесь с администрацией.</p>
+                <b>Ваш ЦКП заблокирован в связи с прекращением деятельности или нарушением правил ИС. Для разблокировки свяжитесь с администрацией.</b>
                 <?php
             }
-        ?>
-        <hr>
+            ?>
+        </div>
+        <br>
         <h4>Обратная связь</h4>
         <br>
         <?php yii\widgets\Pjax::begin(['id' => 'update_messages_box']); ?>
@@ -367,7 +376,7 @@
                         'attribute' => 'short_path',
                         'label' => 'Имя файла',
                         'content' => function($data) {
-                            return \yii\bootstrap\Html::a($data->short_path, ['site/download?hash=ad55$qwe1313']);
+                            return \yii\bootstrap\Html::a($data->short_path, ['site/download?hash='.$data->hash.'&type=1']);
                         }
                     ],
                     [

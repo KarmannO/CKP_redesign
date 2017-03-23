@@ -30,6 +30,7 @@ use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\web\ForbiddenHttpException;
+use yii\web\Response;
 
 /**
  * Class CkpController
@@ -127,8 +128,22 @@ class CkpController extends Controller
         $model = new CkpCommentForm();
         $equipment_form = new EquipmentAddForm();
         $file_model = new CkpUploadForm();
-        if($model->load($_FILES) && $model->send($ckp_id))
+
+        // Handle file upload.
+        if($model->load($_POST) && $model->send($ckp_id))
             return $this->renderPartial('__messages', ['form' => $model]);
+        // Handle info edit with kartik\Editable.
+        elseif(isset($_POST['hasEditable'])) {
+            \Yii::$app->response->format = Response::FORMAT_JSON;
+            $ckp = Ckp::getCkp($ckp_id)->one();
+            if($ckp->load($_POST['Ckp'])) {
+                return UserController::chooseWidgetOutput($_POST['Ckp'], $ckp);
+            }
+            else {
+                return ['output' => '', 'message' => 'Ошибка подтверждения'];
+            }
+        }
+        // Handle equipment add.
         elseif ($equipment_form->load(\Yii::$app->request->post()) && $equipment_form->add($ckp_id))
             return $this->renderPartial('__equipment', ['ckp_id' => $ckp_id]);
         elseif (isset($_FILES['CkpUploadForm']))
@@ -136,15 +151,17 @@ class CkpController extends Controller
             $file_model->upload($ckp_id);
             return \Yii::$app->response->redirect('/ckp/view?id='.$ckp_id);
         }
-        $data_provider = new ActiveDataProvider([ 'query' => Ckp::getCkp($ckp_id) ]);
-        $services_provider = new ActiveDataProvider([ 'query' => Service::getServicesByCkp($ckp_id) ]);
-        return $this->render('view', [
-            'model' => $model,
-            'dataProvider' => $data_provider,
-            'commentsProvider' => $comments_provider,
-            'servicesProvider' => $services_provider,
-            'equipment_form' => $equipment_form,
-            'file_model' => $file_model
-        ]);
+        else {
+            $data_provider = new ActiveDataProvider(['query' => Ckp::getCkp($ckp_id)]);
+            $services_provider = new ActiveDataProvider(['query' => Service::getServicesByCkp($ckp_id)]);
+            return $this->render('view', [
+                'model' => $model,
+                'dataProvider' => $data_provider,
+                'commentsProvider' => $comments_provider,
+                'servicesProvider' => $services_provider,
+                'equipment_form' => $equipment_form,
+                'file_model' => $file_model
+            ]);
+        }
     }
 }

@@ -30,6 +30,17 @@ class Ckp extends ActiveRecord
         return Ckp::find()->where(['validation_status' => '1']);
     }
 
+    public function load($data)
+    {
+        foreach ($this->attributes as $key => $value)
+        {
+            if(isset($data[$key]))
+                $this[$key] = $data[$key];
+        }
+        $this->save();
+        return true;
+    }
+
     public static function getMyCkp()
     {
         $my_ckp = CkpBinding::find()->where(['user_id' => \Yii::$app->user->identity->id])->select('ckp_id');

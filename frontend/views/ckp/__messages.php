@@ -4,7 +4,7 @@
         'dataProvider' => new \yii\data\ActiveDataProvider([
             'query' => \common\models\CkpComment::find(),
             'pagination' => [
-                'pageSize' => \common\models\CkpComment::find()->count()
+                'pageSize' => 10000
             ]
         ]),
         'itemView' => '__message',

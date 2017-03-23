@@ -16,18 +16,37 @@ use yii\base\Controller;
 use yii\base\ErrorException;
 use yii\helpers\Html;
 
+/**
+ * Class ConstructorController
+ * @package frontend\controllers
+ * Class for handling constructor requests.
+ */
 class ConstructorController extends Controller
 {
+    /**
+     * Action for rendering constructor form.
+     * @return string
+     */
     public function actionConstruct()
     {
         return $this->render('construct', ['valid_ckp_list' => Ckp::getValidCkp()]);
     }
 
+    /**
+     * Ajax action for getting short name of specific ckp.
+     * @return mixed Ckp short name
+     */
     public function actionAjax_get_ckp()
     {
         return Ckp::getCkp($_GET['id'])->one()->short_name;
     }
 
+    /**
+     * Function for serializing complicated object TODO: add format to wiki
+     * to format _f[#value] => #label
+     * @param $object \stdClass object.
+     * @return array formatted hash.
+     */
     private static function getValuesFromObject($object)
     {
         $result = [];
@@ -38,8 +57,14 @@ class ConstructorController extends Controller
         return $result;
     }
 
+    /**
+     * Function for converting JSON element in specific format to output HTML form control.
+     * @param $json_element array form data in JSON
+     * @return string|null HTML form control or null if JSON is not correct.
+     */
     private static function convertJsonElement($json_element)
     {
+        // In case of some type we returning some HTML, null by default.
         switch ($json_element->type)
         {
             case 'checkbox':
@@ -160,9 +185,17 @@ class ConstructorController extends Controller
                 ]);
             }
             break;
+            default:
+                return null;
+            break;
         }
     }
 
+    /**
+     * General function for getting HTML form control from request's raw data.
+     * @param $raw_data string Json encoded data from request.
+     * @return string HTML form control.
+     */
     public static function getHtml($raw_data)
     {
         $json_data = json_decode($raw_data);
@@ -174,6 +207,10 @@ class ConstructorController extends Controller
         return $final_html;
     }
 
+    /**
+     * Action for handling HTML form getting.
+     * @return null|string HTML form control if data is set, null if not.
+     */
     public function actionAjax_get_html()
     {
         $raw_data = $_POST['raw_data'];
@@ -184,6 +221,10 @@ class ConstructorController extends Controller
         return null;
     }
 
+    /**
+     * Ajax action for adding new service. TODO: move adding to model.
+     * @throws ErrorException Throw if system cant add new service.
+     */
     public function actionAjax_add_service()
     {
         $service_info = json_decode($_POST['service_info']);
@@ -197,7 +238,6 @@ class ConstructorController extends Controller
         $service->author_id = User::getCurrentUser()->id;
         if(!$service->save())
             throw new ErrorException('Не удалось сохранить услугу.');
-        else
-            return 'Ok';
+        return;
     }
 }
